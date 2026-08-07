@@ -1,0 +1,12 @@
+.git
+.github
+log/*
+tmp/*
+!tmp/pids
+!tmp/pids/.keep
+storage/*
+!storage/.keep
+.bundle
+vendor/bundle
+coverage
+.env

@@ -1,0 +1,12 @@
+inherit_gem:
+  rubocop-rails-omakase: rubocop.yml
+
+# Every file under app/features/ and app/shared/ uses the compact
+# `class Features::Task::Foo` form on purpose (see config/application.rb).
+# The expanded `module Features; module Task; ...; end; end` form is a real
+# bug here, not just a style choice: inside it, a bare `Task` reference
+# resolves to the `Features::Task` namespace module instead of the `Task`
+# model, because Ruby's constant lookup checks enclosing lexical scopes by
+# name. Pin the cop instead of leaving that footgun to each author.
+Style/ClassAndModuleChildren:
+  EnforcedStyle: compact

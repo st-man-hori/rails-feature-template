@@ -1,0 +1,34 @@
+default: &default
+  adapter: mysql2
+  encoding: utf8mb4
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  host: <%= ENV.fetch("DB_HOST", "127.0.0.1") %>
+  port: <%= ENV.fetch("DB_PORT", 3306) %>
+  database: <%= ENV.fetch("DB_DATABASE", "app") %>
+  username: <%= ENV.fetch("DB_USERNAME", "app") %>
+  password: <%= ENV.fetch("DB_PASSWORD", "secret") %>
+  # MySQL 8 enables SSL by default with a self-signed cert, which mysql2
+  # refuses to trust out of the box. Local/CI traffic never leaves the
+  # Docker network, so disable it rather than provisioning real certs.
+  ssl_mode: disabled
+
+development:
+  <<: *default
+
+# The test suite uses sqlite3 instead of MySQL, the same trade-off both the
+# Laravel version (RefreshDatabase + SQLite) and the Go version
+# (testutil.NewDB + SQLite) make: fast, isolated tests with no database
+# container required. Production schema is still owned by db/migrate/*.rb
+# (MySQL-flavored); the test DB is a separate, faster path built from
+# db/schema.rb. This is a file rather than ":memory:" on purpose --
+# Rails' own pending-migration check (maintain_test_schema!) opens a second
+# connection to verify the schema, and a bare ":memory:" database is only
+# visible to the connection that created it, so that check would always see
+# an empty database and fail. A file on disk (still fast; it's a tmpfs-speed
+# SQLite file, not a real database server) is visible to every connection.
+test:
+  adapter: sqlite3
+  database: storage/test.sqlite3
+
+production:
+  <<: *default
