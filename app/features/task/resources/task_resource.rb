@@ -1,7 +1,7 @@
-# Shapes a Task (or a collection of them) into the API's camelCase response
-# format. Plain class methods rather than an instantiated object, since
-# there's no per-instance state to carry -- the whole point is decoupling
-# the wire format from the model's column names.
+# Task(またはその集合)を API の camelCase レスポンス形式に変換する。
+# インスタンス化せずクラスメソッドだけで完結させているのは、保持すべき
+# インスタンス状態が無いから -- 目的はあくまで wire フォーマットを
+# モデルのカラム名から切り離すことにある。
 # (Laravel: App\Features\Task\Resources\TaskResource)
 class Features::Task::Resources::TaskResource
   def self.to_h(task)

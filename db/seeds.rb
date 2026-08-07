@@ -2,8 +2,8 @@
 # development, test). The code here should be idempotent so that it can be executed at any point in every environment.
 # The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
 #
-# Faker is a development/test-only dependency (see Gemfile), so this is meant to be run locally, not in production --
-# the same assumption the Laravel version's DatabaseSeeder makes with fakerphp/faker.
+# Faker は development/test 専用の依存(Gemfile 参照)なので、本番ではなくローカルで実行する想定 --
+# Laravel 版の DatabaseSeeder が fakerphp/faker に対して置いているのと同じ前提。
 
 5.times do
   Task.create!(

@@ -1,11 +1,11 @@
-# Sample Feature: everything needed to serve /api/tasks lives in this
-# directory. Copy this Feature as a starting point for a new one, then
-# delete it once your first real Feature exists.
+# サンプル Feature: /api/tasks を提供するために必要なものはすべてこの
+# ディレクトリの中にある。新しい Feature を作るときはこれをコピーして
+# 出発点にし、最初の本物の Feature ができたら削除する。
 #
-# Request flow: Router -> ApplicationController#underscore_params! ->
-# TaskController -> Request (validate) -> Input -> UseCase -> Model ->
-# Resource. (Laravel: Router -> Middleware -> Controller -> FormRequest ->
-# Input DTO -> UseCase -> Model -> Resource)
+# リクエストの流れ: Router → ApplicationController#underscore_params! →
+# TaskController → Request(検証) → Input → UseCase → Model → Resource
+# (Laravel: Router → Middleware → Controller → FormRequest → Input DTO →
+# UseCase → Model → Resource)
 class Features::Task::TaskController < ApplicationController
   def index
     request = Features::Task::Requests::IndexTaskRequest.new(index_params)

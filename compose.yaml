@@ -10,9 +10,9 @@ services:
     ports:
       - "${APP_PORT:-8000}:3000"
     environment:
-      # bundle's answer to Composer's vendor/ -- keeping it inside the bind
-      # mount means `bundle install` writes to the host filesystem, the
-      # same as the Laravel version's ./src/vendor.
+      # bundler の vendor/bundle は Composer の vendor/ に相当する -- バイ
+      # ンドマウントの中に置くことで `bundle install` がホスト側のファイル
+      # システムに書き込まれる。Laravel 版の ./src/vendor と同じ考え方。
       BUNDLE_PATH: vendor/bundle
       DB_HOST: mysql
       DB_PORT: 3306

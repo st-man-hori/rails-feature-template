@@ -7,25 +7,27 @@ default: &default
   database: <%= ENV.fetch("DB_DATABASE", "app") %>
   username: <%= ENV.fetch("DB_USERNAME", "app") %>
   password: <%= ENV.fetch("DB_PASSWORD", "secret") %>
-  # MySQL 8 enables SSL by default with a self-signed cert, which mysql2
-  # refuses to trust out of the box. Local/CI traffic never leaves the
-  # Docker network, so disable it rather than provisioning real certs.
+  # MySQL 8 はデフォルトで SSL が有効になっており、自己署名証明書を使う。
+  # mysql2 gem はそのままだとこの証明書を信用してくれない。ローカル/CI の
+  # 通信は Docker ネットワークの外に出ないので、正式な証明書を用意する
+  # 代わりに SSL 自体を無効化している。
   ssl_mode: disabled
 
 development:
   <<: *default
 
-# The test suite uses sqlite3 instead of MySQL, the same trade-off both the
-# Laravel version (RefreshDatabase + SQLite) and the Go version
-# (testutil.NewDB + SQLite) make: fast, isolated tests with no database
-# container required. Production schema is still owned by db/migrate/*.rb
-# (MySQL-flavored); the test DB is a separate, faster path built from
-# db/schema.rb. This is a file rather than ":memory:" on purpose --
-# Rails' own pending-migration check (maintain_test_schema!) opens a second
-# connection to verify the schema, and a bare ":memory:" database is only
-# visible to the connection that created it, so that check would always see
-# an empty database and fail. A file on disk (still fast; it's a tmpfs-speed
-# SQLite file, not a real database server) is visible to every connection.
+# テストは sqlite3 を使う(MySQL とは別の DB)。Laravel 版
+# (RefreshDatabase + SQLite)や Go 版(testutil.NewDB + SQLite)と同じで、
+# 追加のデータベースコンテナなしで高速にテストできるというトレードオフ。
+# 本番のスキーマは db/migrate/*.rb(MySQL 向け)が一元管理していて、
+# テスト用 DB は db/schema.rb から作られる別経路になる。
+#
+# `:memory:` ではなくファイル(storage/test.sqlite3)にしているのは、
+# Rails のマイグレーション未適用チェック(maintain_test_schema!)が検証用
+# に別コネクションを開くため。`:memory:` は作成したコネクションからしか
+# 見えないので、その検証は常に「空のDB」を見てしまい失敗する。ファイルに
+# しておけばどのコネクションからも同じ実体が見える(それでも実体は
+# tmpfs 相当の速さで、本物のDBサーバーを立てるわけではない)。
 test:
   adapter: sqlite3
   database: storage/test.sqlite3

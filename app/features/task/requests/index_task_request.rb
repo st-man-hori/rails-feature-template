@@ -1,7 +1,7 @@
-# Validates query params and converts them into an Input. ActiveModel::Model
-# + ActiveModel::Attributes (both built into Rails, no extra gem) fill the
-# same role as a Laravel FormRequest: typed attributes, `validates`, and a
-# `valid?` check the controller runs before touching a UseCase.
+# クエリパラメータを検証し、Input に変換する。ActiveModel::Model +
+# ActiveModel::Attributes(どちらも Rails 標準で追加 gem 不要)が、
+# Laravel の FormRequest と同じ役割を果たす -- 型付き属性・`validates`・
+# UseCase に渡す前にコントローラが呼ぶ `valid?` という組み合わせ。
 class Features::Task::Requests::IndexTaskRequest
   include ActiveModel::Model
   include ActiveModel::Attributes

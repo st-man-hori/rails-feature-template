@@ -1,8 +1,9 @@
-# Base class for domain/business-rule errors raised from a Feature's
-# UseCases. Raise a subclass of this (per-Feature, or per-Shared concern)
-# instead of a generic StandardError, so ApplicationController's rescue_from
-# can render a consistent error response without knowing about every
-# concrete error type. (Laravel: App\Shared\Exceptions\AppDomainException)
+# Feature の UseCase から送出する、ドメイン/ビジネスルール由来のエラーの
+# 基底クラス。汎用的な StandardError ではなく、この継承クラス(Feature
+# ごと、あるいは Shared の関心事ごと)を送出することで、
+# ApplicationController の rescue_from が個々の具象エラー型を知らなくても
+# 一貫したエラーレスポンスを返せるようになる。
+# (Laravel: App\Shared\Exceptions\AppDomainException)
 class Shared::Errors::AppError < StandardError
   def error_code
     raise NotImplementedError, "#{self.class} must implement #error_code"

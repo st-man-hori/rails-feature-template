@@ -1,6 +1,6 @@
-# Builds the JSON body for every error response the API returns, so
-# clients see one consistent error shape regardless of whether it came from
-# a validation failure, a 404, or a domain error.
+# API が返すすべてのエラーレスポンスの JSON ボディを組み立てる。バリデー
+# ションエラー・404・ドメインエラーのどれが原因でも、クライアントから見
+# えるエラーの形を一貫させるため。
 # (Laravel: App\Shared\Responses\ApiErrorResponse)
 class Shared::Responses::ApiErrorResponse
   def self.body(code:, message:, details: nil)

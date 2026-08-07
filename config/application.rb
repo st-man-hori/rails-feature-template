@@ -18,9 +18,10 @@ require "action_view/railtie"
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-# Top-level namespaces for app/features and app/shared (see the
-# config.before_configuration block below for why these need a custom
-# Zeitwerk root instead of the default app/* autoload behavior).
+# app/features と app/shared のトップレベル名前空間(下の
+# config.before_configuration ブロックで、なぜこの2つだけ app/* の
+# デフォルトのオートロード挙動ではなくカスタムの Zeitwerk root が必要
+# なのかを説明している)。
 module Features
 end
 
@@ -50,13 +51,14 @@ module RailsFeatureTemplate
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
 
-    # By default every directory directly under app/ becomes its own
-    # flattened Zeitwerk autoload root -- this is why app/models/task.rb
-    # resolves to `Task` instead of `Models::Task`. Left alone, app/features
-    # would flatten the same way, and app/features/task/task_controller.rb
-    # would resolve to `Task::TaskController`, colliding with the `Task`
-    # model. Pull both custom directories out of the default autoload paths
-    # and re-mount them under explicit namespaces instead.
+    # デフォルトでは app/ 直下の各ディレクトリはそれぞれ独立した、
+    # フラット化された Zeitwerk のオートロード root になる -- これが
+    # app/models/task.rb が `Models::Task` ではなく `Task` に解決される
+    # 理由。何もしなければ app/features も同じようにフラット化され、
+    # app/features/task/task_controller.rb は `Task::TaskController` に
+    # 解決されて `Task` モデルと衝突してしまう。そこでこの2つのディレク
+    # トリだけデフォルトのオートロードパスから外し、明示的な名前空間の
+    # 下に付け替える。
     features_path = "#{Rails.root}/app/features"
     shared_path = "#{Rails.root}/app/shared"
     config.autoload_paths -= [ features_path, shared_path ]

@@ -1,47 +1,47 @@
 source "https://rubygems.org"
 
 gem "rails", "~> 8.1.3", ">= 8.1.3.1"
-# Use mysql as the database for Active Record (development/production;
-# tests use sqlite3 in-memory -- see the :test group below).
+# Active Record 用データベース(開発・本番)。テストは sqlite3 を使う
+# (下の :test グループを参照)
 gem "mysql2", "~> 0.5"
-# Use the Puma web server [https://github.com/puma/puma]
+# Puma Web サーバー [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
 
-# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
+# Windows は zoneinfo ファイルを含まないため tzinfo-data を同梱する
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 
-# Speeds up boot time by caching expensive require/load-path work
+# require/load-path の処理をキャッシュして起動を高速化する
 gem "bootsnap", require: false
 
-# Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin Ajax possible
+# CORS(Cross-Origin Resource Sharing)を扱う場合は Rack CORS を有効化する
 # gem "rack-cors"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
 
-  # Request specs (Laravel: PHPUnit / Pest)
+  # request spec(Laravel: PHPUnit / Pest)
   gem "rspec-rails", "~> 8.0"
-  # Model factories (Laravel: database/factories)
+  # モデルのファクトリ(Laravel: database/factories)
   gem "factory_bot_rails", "~> 6.4"
-  # Fake data for factories (Laravel: fakerphp/faker)
+  # ファクトリ用のダミーデータ生成(Laravel: fakerphp/faker)
   gem "faker", "~> 3.5"
-  # Style checker, Rails' own default preset (Laravel: Laravel Pint)
+  # Rails 公式のデフォルトプリセットによるスタイルチェッカー(Laravel: Laravel Pint)
   gem "rubocop-rails-omakase", require: false
-  # Static analysis for common security issues (Rails ships this by default;
-  # closest fit to Larastan, though it checks for vulnerabilities rather than
-  # type errors -- see the README for why this template doesn't add a
-  # type-level checker like Sorbet)
+  # 代表的なセキュリティ脆弱性を検出する静的解析ツール(Rails のデフォルト
+  # 同梱ツール)。Larastan に最も近い立ち位置だが、型エラーではなく
+  # 脆弱性を検出するものなので役割は異なる。このテンプレートで Sorbet の
+  # ような型チェッカーを入れていない理由は README を参照
   gem "brakeman", require: false
 end
 
 group :test do
-  # sqlite3 backs the test database (see config/database.yml) so the suite
-  # runs fast without a MySQL container, the same trade-off both the Laravel
-  # and Go versions of this template make.
+  # テスト用データベースは sqlite3(config/database.yml 参照)。追加の
+  # データベースコンテナなしで高速にテストを回せる、という Laravel 版・
+  # Go 版と同じトレードオフ
   gem "sqlite3", "~> 2.1"
-  # Derives an OpenAPI document from the request specs as they run (Laravel:
-  # Scramble, which infers OpenAPI from FormRequest/Resource type hints
-  # instead of from tests)
+  # request spec の実行結果から OpenAPI ドキュメントを自動生成する
+  # (Laravel: Scramble。ただし Scramble は FormRequest/Resource の
+  # 型情報から静的に生成する点が異なる)
   gem "rspec-openapi", "~> 0.15"
 end

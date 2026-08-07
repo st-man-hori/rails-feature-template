@@ -1,6 +1,7 @@
-# Every Feature controller inherits from this. It carries the app-wide
-# error -> JSON response mapping (Laravel: the withExceptions block in
-# bootstrap/app.php) so individual Feature controllers stay thin.
+# すべての Feature コントローラはこれを継承する。アプリ全体のエラー →
+# JSON レスポンス変換をここに集約しているので(Laravel でいう
+# bootstrap/app.php の withExceptions ブロックに相当)、個々の Feature
+# コントローラは薄いままでいられる。
 class ApplicationController < ActionController::API
   before_action :underscore_params!
 
@@ -9,19 +10,19 @@ class ApplicationController < ActionController::API
 
   private
 
-  # The API's wire format is camelCase (isDone, dueDate) while Ruby/Rails
-  # convention -- attribute names, column names -- is snake_case. Laravel
-  # bridges the same gap per-Input, via a MapOutputName(SnakeCaseMapper)
-  # attribute; doing it once here for every incoming request means
-  # everything downstream (Requests, UseCases, Models) can just use plain
-  # snake_case Ruby.
+  # API の wire フォーマットは camelCase(isDone, dueDate)だが、
+  # Ruby/Rails の慣習(属性名・カラム名)は snake_case。Laravel は
+  # Input ごとに MapOutputName(SnakeCaseMapper)属性でこのギャップを
+  # 埋めているが、ここでは受信リクエストに対して一箇所でまとめて変換する
+  # ことで、以降(Requests・UseCases・Models)はすべて素の snake_case な
+  # Ruby として書けるようにしている。
   def underscore_params!
     params.deep_transform_keys! { |key| key.to_s.underscore }
   end
 
-  # Called by a Feature controller after `request_object.invalid?` to render
-  # a 422 with field-level messages. (Laravel: FormRequest's automatic
-  # ValidationException rendering)
+  # Feature コントローラが `request_object.invalid?` の後に呼び出し、
+  # フィールドごとのメッセージ付きで 422 を返す。
+  # (Laravel: FormRequest によるバリデーション失敗時の自動レンダリング)
   def render_validation_error(request_object)
     render(
       json: Shared::Responses::ApiErrorResponse.body(
